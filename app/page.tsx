@@ -23,76 +23,170 @@ export default function Home() {
   const isGenerating =
     status === "submitted" || status === "streaming";
 
+  const suggestions = [
+    {
+      title: "Get ideas",
+      description: "What can you help me with?",
+      icon: "💡",
+      text: "What can you help me with?",
+    },
+    {
+      title: "Search the web",
+      description: "Search for the latest information",
+      icon: "🔎",
+      text: "Search the latest news about Somalia",
+    },
+    {
+      title: "Learn something",
+      description: "Explain a programming topic",
+      icon: "📚",
+      text: "Explain JavaScript to me",
+    },
+    {
+      title: "Build something",
+      description: "Get help with your project",
+      icon: "💻",
+      text: "Help me build a web application",
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-white text-black">
 
       {/* Header */}
       <header className="sticky left-0 top-0 z-40 border-b border-gray-200 bg-white p-5">
-        <h1 className="text-xl font-semibold">
-          Chat with AI
-        </h1>
+        <div className="mx-auto max-w-2xl">
+          <h1 className="text-xl font-semibold">
+            Chat with AI
+          </h1>
+        </div>
       </header>
 
       {/* Messages */}
-      <main className="mx-auto w-full  max-w-2xl px-5 pt-6 pb-32">
-        <div className="flex w-full flex-col gap-4">
+      <main className="mx-auto w-full max-w-2xl px-5 pt-6 pb-32">
 
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex w-full min-w-0 ${
-                message.role === "user"
-                  ? "justify-end "
-                  : "justify-start"
-              }`}
-            >
+        {messages.length === 0 ? (
+
+          /* Welcome Screen */
+          <div className="flex min-h-[65vh] flex-col items-center justify-center text-center">
+
+            {/* Logo */}
+            <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-black text-3xl text-white shadow-sm">
+              ✦
+            </div>
+
+            {/* Title */}
+            <h2 className="text-3xl font-semibold tracking-tight">
+              How can I help you?
+            </h2>
+
+            {/* Description */}
+            <p className="mt-3 max-w-md text-gray-500">
+              Ask me anything, search the web, learn something
+              new, or get help with your projects.
+            </p>
+
+            {/* Suggestions */}
+            <div className="mt-8 grid w-full max-w-lg grid-cols-1 gap-3 sm:grid-cols-2">
+
+              {suggestions.map((suggestion) => (
+                <button
+                  key={suggestion.title}
+                  type="button"
+                  onClick={() => setInput(suggestion.text)}
+                  className="rounded-xl border border-gray-200 bg-white p-4 text-left transition hover:border-gray-300 hover:bg-gray-50"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">
+                      {suggestion.icon}
+                    </span>
+
+                    <span className="font-medium">
+                      {suggestion.title}
+                    </span>
+                  </div>
+
+                  <p className="mt-2 text-sm text-gray-500">
+                    {suggestion.description}
+                  </p>
+                </button>
+              ))}
+
+            </div>
+          </div>
+
+        ) : (
+
+          /* Chat Messages */
+          <div className="flex w-full flex-col gap-4">
+
+            {messages.map((message) => (
               <div
-                className={`max-w-[85%] min-w-0 wrap-break-words rounded-lg px-4 py-2 ${
+                key={message.id}
+                className={`flex w-full min-w-0 ${
                   message.role === "user"
-                    ? "bg-gray-600 text-white"
-                    : "border border-gray-200  bg-gray-200 " 
+                    ? "justify-end"
+                    : "justify-start"
                 }`}
               >
-                {message.parts.map((part, index) =>
-                  part.type === "text" ? (
-                    <p
-                      key={index}
-                      className="whitespace-pre-wrap wrap-break-words"
-                    >
-                      {part.text}
-                    </p>
-                  ) : null
-                )}
-              </div>
-            </div>
-          ))}
 
-          {/* Generating */}
-          {isGenerating && (
-            <div className="flex justify-start">
-              <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3">
-                <span className="text-sm text-gray-500">
-                  generating
-                </span>
+                <div
+                  className={`max-w-[85%] min-w-0 wrap-break-words rounded-lg px-4 py-2 ${
+                    message.role === "user"
+                      ? "bg-gray-600 text-white"
+                      : "border border-gray-200 bg-gray-200 text-black"
+                  }`}
+                >
 
-                <div className="flex gap-1">
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-500 [animation-delay:-0.3s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-500 [animation-delay:-0.15s]" />
-                  <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-500" />
+                  {message.parts.map((part, index) =>
+                    part.type === "text" ? (
+                      <p
+                        key={index}
+                        className="whitespace-pre-wrap wrap-break-words"
+                      >
+                        {part.text}
+                      </p>
+                    ) : null
+                  )}
+
                 </div>
               </div>
-            </div>
-          )}
+            ))}
 
-        </div>
+            {/* Generating */}
+            {isGenerating && (
+              <div className="flex justify-start">
+                <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-3">
+
+                  <span className="text-sm text-gray-500">
+                    generating
+                  </span>
+
+                  <div className="flex gap-1">
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-500 [animation-delay:-0.3s]" />
+
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-500 [animation-delay:-0.15s]" />
+
+                    <span className="h-1.5 w-1.5 animate-bounce rounded-full bg-gray-500" />
+                  </div>
+
+                </div>
+              </div>
+            )}
+
+          </div>
+        )}
+
       </main>
 
       {/* Input */}
       <div className="fixed bottom-0 left-0 z-50 w-full border-t border-gray-200 bg-white p-5">
+
         <form
           onSubmit={handleSubmit}
           className="mx-auto flex w-full max-w-2xl gap-2"
         >
+
           <input
             type="text"
             placeholder={
@@ -113,7 +207,9 @@ export default function Home() {
           >
             {isGenerating ? "Generating..." : "Send"}
           </button>
+
         </form>
+
       </div>
 
     </div>
