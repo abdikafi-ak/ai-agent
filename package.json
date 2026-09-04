@@ -12,6 +12,7 @@
     "@ai-sdk/react": "^4.0.95",
     "@openrouter/ai-sdk-provider": "^3.0.0",
     "ai": "^7.0.92",
+    "axios": "^1.20.0",
     "next": "16.3.4",
     "react": "19.2.8",
     "react-dom": "19.2.8",
