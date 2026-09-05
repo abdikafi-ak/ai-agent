@@ -6,7 +6,7 @@ import {
 
 import { openRouter, MODAL } from "@/lib/ai";
 import { NextRequest } from "next/server";
-import { webSearch } from "@/lib/tool";
+import { webSearch,getCurrentTime } from "@/lib/tool";
 
 export const POST = async (req: NextRequest) => {
   const { messages }: { messages: UIMessage[] } = await req.json();
@@ -45,7 +45,7 @@ export const POST = async (req: NextRequest) => {
       messages: await convertToModelMessages(messages),
 
       tools: {
-        webSearch,
+        webSearch,getCurrentTime
       },
 
       stopWhen: ({ steps }) => steps.length >= 5,

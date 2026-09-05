@@ -26,3 +26,33 @@ export const webSearch = tool({
         return response.data;
     },
 });
+export const getCurrentTime = tool({
+    description:
+        "Get the current date and time. Use this whenever the user asks for the current time, today's date, or what time it is.",
+    inputSchema: z.object({
+        timezone: z
+            .string()
+            .optional()
+            .describe(
+                "IANA timezone such as Africa/Mogadishu, America/New_York, or Europe/London"
+            ),
+    }),
+
+    execute: async ({ timezone = "Africa/Mogadishu" }) => {
+        const now = new Date();
+
+        return {
+            date: new Intl.DateTimeFormat("en-US", {
+                timeZone: timezone,
+                dateStyle: "full",
+            }).format(now),
+
+            time: new Intl.DateTimeFormat("en-US", {
+                timeZone: timezone,
+                timeStyle: "long",
+            }).format(now),
+
+            timezone,
+        };
+    },
+});
