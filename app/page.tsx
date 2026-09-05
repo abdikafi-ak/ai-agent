@@ -12,6 +12,7 @@ export default function Home() {
   const [input, setInput] = useState("");
 
   const isGenerating = status === "submitted" || status === "streaming";
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // --------------------------------
   // Scroll state
@@ -20,6 +21,12 @@ export default function Home() {
   const isUserScrollingRef = useRef(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInput(e.target.value);
+
+    e.target.style.height = "auto";
+    e.target.style.height = `${Math.min(e.target.scrollHeight, 200)}px`;
+  };
   // --------------------------------
   // Detect browser scrolling
   // --------------------------------
@@ -500,14 +507,15 @@ export default function Home() {
       {/* ========================================
           FIXED INPUT
       ======================================== */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-gray-200 bg-white/95 backdrop-blur">
+      <div className="fixed bottom-0 left-0 right-0 z-40 border-gray-200 bg-white/95 backdrop-blur">
         <div className="mx-auto w-full max-w-4xl px-4 py-3 sm:px-6">
           <form onSubmit={handleSubmit} className="relative">
             <div className="flex items-end rounded-2xl border border-gray-300 bg-white shadow-sm transition focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-100">
               {/* Textarea */}
               <textarea
+                ref={textareaRef}
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={handleInput}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
@@ -521,8 +529,8 @@ export default function Home() {
                 placeholder={
                   isGenerating ? "AI is generating..." : "Message AI..."
                 }
-                rows={3}
-                className="min-h-[100px] max-h-[200px] flex-1 resize-none bg-transparent px-4 py-4 text-sm leading-6 outline-none placeholder:text-gray-400 disabled:cursor-not-allowed disabled:opacity-60"
+               
+                className="min-h-[48px] max-h-[200px] flex-1 resize-none overflow-y-auto bg-transparent px-4 py-3 text-sm leading-6 outline-none placeholder:text-gray-400 disabled:cursor-not-allowed disabled:opacity-60"
               />
 
               {/* Stop / Send */}
