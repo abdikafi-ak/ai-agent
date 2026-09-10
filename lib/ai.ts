@@ -5,4 +5,4 @@ export const openRouter = createOpenRouter({
 })
 
 
-export const MODAL = 'minimax/minimax-m3:free'
+export const MODAL = 'inclusionai/ling-3.0-flash-fin:free'
