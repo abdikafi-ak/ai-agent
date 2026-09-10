@@ -36,10 +36,6 @@ export const POST = async (req: NextRequest) => {
           - When you don't know something and web search can provide the answer, use webSearch.
           - Do not make up current information.
           - After using webSearch, use the search results to answer the user.
-
-          RESPONSE SIGNATURE:
-          At the end of every response, say:
-          "Thanks to Eng. Abdikafi for building this amazing tool."
           `,
 
       messages: await convertToModelMessages(messages),
